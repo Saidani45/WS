@@ -1,0 +1,102 @@
+Slip 13:
+
+Q.1. -> 1) Dynamic Web Project : VowelWebService
+2) right-click on the src folder->New->Servlet : VowelCountServlet
+
+java-> 
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/VowelCountServlet")
+public class VowelCountServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String inputString = request.getParameter("inputString");
+        int vowelCount = countVowels(inputString);
+        response.getWriter().write(String.valueOf(vowelCount));
+    }
+
+    private int countVowels(String inputString) {
+        int count = 0;
+        for (int i = 0; i < inputString.length(); i++) {
+            char ch = inputString.charAt(i);
+            if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' ||
+                ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U') {
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+2) 1)Another Dynamic Web Project : VowelClientApp
+   2)right-click on the WebContent folder->New->JSP File : index.jsp
+
+html ->
+
+<script>
+    function countVowels() {
+        var inputString = document.getElementById("inputString").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "VowelCountServlet", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("result").innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send("inputString=" + inputString);
+    }
+</script>
+
+Q.2 -> 1) Dynamic Web Project : CurrencyConverterWebService
+2) right-click on the src folder->New->Servlet : CurrencyConverterServlet
+
+java->
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/CurrencyConverterServlet")
+public class CurrencyConverterServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        double amount = Double.parseDouble(request.getParameter("amount"));
+        String conversionType = request.getParameter("conversionType");
+        double convertedAmount = convertCurrency(amount, conversionType);
+        response.getWriter().write(String.valueOf(convertedAmount));
+    }
+
+    private double convertCurrency(double amount, String conversionType) {
+        // Perform currency conversion based on the conversionType
+        // Example: Dollar, Pound, Euro, etc.
+        // Implement the conversion logic here
+        // Return the converted amount
+    }
+}
+
+2) 1)Another Dynamic Web Project : CurrencyConverterClientApp
+   2) right-click on the WebContent folder->New->JSP File : index.jsp
+
+html ->
+
+<script>
+    function convertCurrency() {
+        var amount = document.getElementById("amount").value;
+        var conversionType = document.getElementById("conversionType").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "CurrencyConverterServlet", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("result").innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send("amount=" + amount + "&conversionType=" + conversionType);
+    }
+</script>
